@@ -47,6 +47,7 @@ v2f vert( appdata_base v )
 // Fragment shader
 float4 frag( v2f i ) : COLOR
 {
+	discard;
 	float4_t diffuseMapColor = tex2D( _MainTex, i.uv );
 
 	float_t maxChan = max( max( diffuseMapColor.r, diffuseMapColor.g ), diffuseMapColor.b );

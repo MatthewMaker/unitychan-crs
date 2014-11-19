@@ -30,9 +30,11 @@ struct v2f
 	float3 eyeDir   : TEXCOORD3;
 	float3 lightDir : TEXCOORD4;
 	float3 normal   : TEXCOORD5;
+	float4 wpos : TEXCOORD6;
+	float4 spos : TEXCOORD7;
 #ifdef ENABLE_NORMAL_MAP
-	float3 tangent  : TEXCOORD6;
-	float3 binormal : TEXCOORD7;
+	float3 tangent  : TEXCOORD8;
+	float3 binormal : TEXCOORD9;
 #endif
 };
 
@@ -46,9 +48,11 @@ struct v2f
 	float3 eyeDir   : TEXCOORD1;
 	float3 lightDir : TEXCOORD2;
 	float3 normal   : TEXCOORD3;
+	float4 wpos : TEXCOORD4;
+	float4 spos : TEXCOORD5;
 #ifdef ENABLE_NORMAL_MAP
-	float3 tangent  : TEXCOORD4;
-	float3 binormal : TEXCOORD5;
+	float3 tangent  : TEXCOORD6;
+	float3 binormal : TEXCOORD7;
 #endif
 };
 
@@ -65,7 +69,8 @@ struct v2f
 v2f vert( appdata_tan v )
 {
 	v2f o;
-	o.pos = mul( UNITY_MATRIX_MVP, v.vertex );
+	o.pos = o.spos = mul( UNITY_MATRIX_MVP, v.vertex );
+	o.wpos = mul(_Object2World, v.vertex);
 	o.uv.xy = TRANSFORM_TEX( v.texcoord.xy, _MainTex );
 	o.normal = normalize( mul( _Object2World, float4_t( v.normal, 0 ) ).xyz );
 
@@ -119,9 +124,67 @@ inline float3_t GetNormalFromMap( v2f input )
 
 #endif
 
+float  modc(float  a, float  b) { return a - b * floor(a/b); }
+float2 modc(float2 a, float2 b) { return a - b * floor(a/b); }
+float3 modc(float3 a, float3 b) { return a - b * floor(a/b); }
+float4 modc(float4 a, float4 b) { return a - b * floor(a/b); }
+
+float2 boxcell(float3 p3, float3 n)
+{
+	float2 p;
+	float t = 0.7;
+	if(abs(n.x)>t) {
+		p = p3.yz;
+	}
+	else if(abs(n.z)>t) {
+		p = p3.xy;
+	}
+	else {
+		p = p3.xz;
+	}
+
+	p = frac(p);
+	float r = 0.123;
+	float v = 0.0, g = 0.0;
+	r = frac(r * 9184.928);
+	float cp, d;
+		
+	d = p.x;
+	g += pow(clamp(1.0 - abs(d), 0.0, 1.0), 1000.0);
+	d = p.y;
+	g += pow(clamp(1.0 - abs(d), 0.0, 1.0), 1000.0);
+	d = p.x - 1.0;
+	g += pow(clamp(3.0 - abs(d), 0.0, 1.0), 1000.0);
+	d = p.y - 1.0;
+	g += pow(clamp(1.0 - abs(d), 0.0, 1.0), 10000.0);
+		
+		
+	const int iter = 11;
+	for(int i = 0; i < iter; i ++)
+	{
+		cp = 0.5 + (r - 0.5) * 0.9;
+		d = p.x - cp;
+		//g += pow(clamp(1.0 - abs(d), 0.0, 1.0), 200.0);
+		g += clamp(1.0 - abs(d), 0.0, 1.0) > 0.995-(0.00075*i) ? 1.0 : 0.0;
+		if(d > 0.0) {
+			r = frac(r * 4829.013);
+			p.x = (p.x - cp) / (1.0 - cp);
+			v += 1.0;
+		}
+		else {
+			r = frac(r * 1239.528);
+			p.x = p.x / cp;
+		}
+		p = p.yx;
+	}
+	v /= float(iter);
+	return float2(g, v);
+}
 // Fragment shader
 float4 frag( v2f i ) : COLOR
 {
+	//if(dot(i.eyeDir, i.normal)<0.0) { discard; }
+
 	float4_t diffSamplerColor = tex2D( _MainTex, i.uv.xy );
 
 #ifdef ENABLE_NORMAL_MAP
@@ -176,5 +239,17 @@ float4 frag( v2f i ) : COLOR
 	combinedColor += falloffU * lightColor;
 #endif
 
-	return float4( combinedColor, opacity );
+	float2 dg = boxcell(i.wpos, i.normal);
+	float fade = i.wpos.y+1.0 - _Time.y+dg.y*0.5;
+	if(fade>0.0) { discard; }
+	float s = max((0.8-modc(i.wpos.y + _Time.y*1.0 + 1.5, 3.33)), 0.0) * 10.0;
+	float pc = 1.0-clamp(1.0 - max(min(dg.x, 2.0)-1.0, 0.0)*2.0, 0.0, 1.0);
+	i.spos /= i.spos.w;
+	float scanline = max(min(abs(modc(i.spos.y, 0.02)-0.01)*100.0, 1.0), 0.5);
+	float na = 1.0 - abs(dot(i.normal, i.eyeDir.xyz));
+	combinedColor *= float3(0.5, 0.6, 1.8) * 1.5 * (modc(_Time.y, 0.0073)*100.0+1.0) * (pc*s*na+1.0);
+	combinedColor *= scanline;
+	if(fade>-0.15) { combinedColor.rgb *= 5.0; }
+
+	return float4( combinedColor, opacity);
 }
