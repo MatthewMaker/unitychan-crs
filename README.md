@@ -1,3 +1,5 @@
+![改造メモ](Customize.md)
+
 Unity-Chan "Candy Rock Star" Public Repository
 ----------------------------------------------
 
