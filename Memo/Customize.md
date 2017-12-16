@@ -45,6 +45,26 @@ Spectrum 1, 2, 3, 4用のAudioTrackをコピペで追加した。
 
 ![audiotrack](audiotracks.jpg)
 
+### CandyRockStarとLipSyncController(Prefabs On Timeline)
+
+次はUnityちゃんをタイムラインに乗せてみよう。
+
+* [Candy Rock Star をさわってみた#05 ～ ユニティちゃんのアニメ連動移動制御](https://dennou-note.blogspot.jp/2014/12/candy-rock-star-05.html)
+
+CandyRockStarとLipSyncControllerプレハブをシーンにインスタンス化する。
+TimelineにAnimationTrackを追加して``UnityChan/Animations/C86unitychan_003_NOT01_Final/003_NOT01_Final``アニメーションクリップを投入し、アニメーターにCandyRockStarを設定。
+同様にAnimationTrackを追加して``UnityInTheSky/Animation/LipSync/Take001``アニメーションクリップを投入し、アニメーターにLipSyncControllerを設定。
+CandyRockStarとLipSyncControllerのAnimatorからControllerを取り除く。
+再生してみる。
+それなりいうまく動いてタイムラインをシークすると音楽とモーションが同期するようになった。
+しかし、UnityChanが最初目を閉じなくなったなど微妙動きが違う。
+もともとAnimatorで設定していたアニメーションレイヤーFaceとHandExpressionが無い状態になったためだ。これは、後に回して先に進めよう。
+
+今後の課題。
+
+* アニメーションレイヤー
+* FastForward(ショートバージョン対応)
+
 ### CameraRig
 
 ### Overlay

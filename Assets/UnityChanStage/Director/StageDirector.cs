@@ -3,13 +3,9 @@ using System.Collections;
 
 public class StageDirector : MonoBehaviour
 {
-    // Control options.
-    public bool ignoreFastForward = true;
-
     // Prefabs.
     public GameObject mainCameraRigPrefab;
     public GameObject[] prefabsNeedsActivation;
-    public GameObject[] prefabsOnTimeline;
     public GameObject[] miscPrefabs;
 
     // Camera points.
@@ -22,7 +18,6 @@ public class StageDirector : MonoBehaviour
     CameraSwitcher mainCameraSwitcher;
     ScreenOverlay[] screenOverlays;
     GameObject[] objectsNeedsActivation;
-    GameObject[] objectsOnTimeline;
 
     void Awake()
     {
@@ -34,10 +29,6 @@ public class StageDirector : MonoBehaviour
         objectsNeedsActivation = new GameObject[prefabsNeedsActivation.Length];
         for (var i = 0; i < prefabsNeedsActivation.Length; i++)
             objectsNeedsActivation[i] = (GameObject)Instantiate(prefabsNeedsActivation[i]);
-
-        objectsOnTimeline = new GameObject[prefabsOnTimeline.Length];
-        for (var i = 0; i < prefabsOnTimeline.Length; i++)
-            objectsOnTimeline[i] = (GameObject)Instantiate(prefabsOnTimeline[i]);
 
         foreach (var p in miscPrefabs) Instantiate(p);
     }
@@ -77,29 +68,6 @@ public class StageDirector : MonoBehaviour
     {
         if (mainCameraSwitcher)
             mainCameraSwitcher.StopAutoChange();
-    }
-
-    public void FastForward(float second)
-    {
-        if (!ignoreFastForward)
-        {
-            FastForwardAnimator(GetComponent<Animator>(), second, 0);
-            foreach (var go in objectsOnTimeline)
-                foreach (var animator in go.GetComponentsInChildren<Animator>())
-                    FastForwardAnimator(animator, second, 0.5f);
-        }
-    }
-
-    void FastForwardAnimator(Animator animator, float second, float crossfade)
-    {
-        for (var layer = 0; layer < animator.layerCount; layer++)
-        {
-            var info = animator.GetCurrentAnimatorStateInfo(layer);
-            if (crossfade > 0.0f)
-                animator.CrossFade(info.nameHash, crossfade / info.length, layer, info.normalizedTime + second / info.length);
-            else
-                animator.Play(info.nameHash, layer, info.normalizedTime + second / info.length);
-        }
     }
 
     public void EndPerformance()
