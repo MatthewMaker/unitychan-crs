@@ -93,11 +93,144 @@ Stageプレハブをインスタンス化。ActivationTrackを追加。Activatio
 あと、StageDirectorからはインスタンス化以外のことをしていないMiscPrefabsをシーンにインスタン化した。
 Back Screen, Back Screen Camera Rig, Background, Character Light, Visualizerの５つ。
 
-### CameraRig
+### MainCameraRigをインスタンス化してカメラ制御をタイムラインに乗せる
+MainCameraRigをシーンにインスタンス化する。
+StageDirectorからカメラ関連のコードを削除する。
+StageDirectorアニメーションクリップが更新するStageDirector.overlayIntensityをScreenOverlayに反映するだけの単機能スクリプトになった。
 
-### Overlay
+```cs
+using UnityEngine;
 
-### Confetti, Stage, CandyRockStar, LipSyncController, Back Screen, Back Screen Camera Rig, Background, Character Light, Visualizer
+
+public class StageDirector : MonoBehaviour
+{
+    #region ScreenOverlay
+    // Objects to be controlled.
+    public ScreenOverlay[] screenOverlays;
+
+    // Exposed to animator.
+    public float overlayIntensity = 1.0f;
+
+    void Update()
+    {
+        foreach (var so in screenOverlays)
+        {
+            so.intensity = overlayIntensity;
+            so.enabled = overlayIntensity > 0.01f;
+        }
+    }
+    #endregion
+
+    #region AnimationClip Events
+    public void StartMusic()
+    {
+        Debug.Log("StartMusic");
+    }
+
+    public void ActivateProps()
+    {
+        Debug.Log("ActivateProps");
+    }
+
+    public void SwitchCamera(int index)
+    {
+        Debug.LogFormat("SwitchCamera: {0}", index);
+    }
+
+    public void StartAutoCameraChange()
+    {
+        Debug.Log("StartAutoCameraChange");
+    }
+
+    public void StopAutoCameraChange()
+    {
+        Debug.Log("StopAutoCameraChange");
+    }
+
+    public void EndPerformance()
+    {
+        Debug.Log("EndPerformance");
+        Application.LoadLevel(0);
+    }
+    #endregion
+}
+```
+
+カメラ関連のアニメーションクリップイベントは2種類あって、SwitchCamera(int)とStart・StopAutoCameraChangeだ。
+ActivationTrackに乗せるべくスクリプトを作成した。
+
+```cs
+using UnityEngine;
+
+public class CameraPosition : MonoBehaviour {
+
+    [SerializeField]
+    CameraSwitcher m_switcher;
+
+    private void OnEnable()
+    {
+        m_switcher.ChangePosition(transform);
+    }
+}
+
+using UnityEngine;
+
+public class AutoCameraChange : MonoBehaviour {
+
+    [SerializeField]
+    CameraSwitcher m_switcher;
+
+    private void OnEnable()
+    {
+        m_switcher.StartAutoChange();
+    }
+
+    private void OnDisable()
+    {
+        m_switcher.StopAllCoroutines();        
+    }
+}
+```
+
+CameraPositionStageDirector.CameraPointsに設定されていたClose-Up, Close-UP2, FinareにセットしてMainCameraRig/CameraSwitcherをセットしそれぞれのGameObjectをDisableにする。
+AutoCameraChangeをCreateEmptyして設定し、Disableにする。
+StageDirectorアイメーションクリップのイベントのタイミングを調べる。
+
+* 14.5秒 SwitchCamera 0
+* 16.0秒 StartAutoCameraChange 
+* 57.2秒 StopAutoCameraChange
+* 58.8秒 SwitchCamera 1
+* 61.5秒 StartAutoCameraChange
+* 191.0秒 StopAutoCameraChange
+* 191.8秒 StartAutoCameraChange
+* 232.0秒 StopAutoCameraChange
+* 234.0秒 SwitchCamera 2
+
+ActivationTrackを作成し、Start・StopAutoCameraChangeのタイミングで３つクリップをセットする。
+ActivationTrackを３つ作成しSwitchCamera0, 1, 2をセットする。
+
+![cameratracks](cameratracks.jpg)
+
+曲終了時にシーン遷移するのも作った。
+
+* 240.0秒 EndPerformance
+
+```cs
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
+public class EndPerformance : MonoBehaviour {
+
+    private void OnEnable()
+    {
+        SceneManager.LoadScene(0);
+    }
+}
+```
+
+これが発動するとシーンがリロードされて最初に戻る。
+ここまででStageDirectorをTimelineに置き換えて見通しが良くなったと思う。
+次から改造してみる。
 
 ## default Timeline
 

@@ -1,29 +1,14 @@
 ﻿using UnityEngine;
-using System.Collections;
+
 
 public class StageDirector : MonoBehaviour
 {
-    // Prefabs.
-    public GameObject mainCameraRigPrefab;
-
-    // Camera points.
-    public Transform[] cameraPoints;
+    #region ScreenOverlay
+    // Objects to be controlled.
+    public ScreenOverlay[] screenOverlays;
 
     // Exposed to animator.
     public float overlayIntensity = 1.0f;
-
-    // Objects to be controlled.
-    CameraSwitcher mainCameraSwitcher;
-    ScreenOverlay[] screenOverlays;
-    GameObject[] objectsNeedsActivation;
-
-    void Awake()
-    {
-        // Instantiate the prefabs.
-        var cameraRig = (GameObject)Instantiate(mainCameraRigPrefab);
-        mainCameraSwitcher = cameraRig.GetComponentInChildren<CameraSwitcher>();
-        screenOverlays = cameraRig.GetComponentsInChildren<ScreenOverlay>();
-    }
 
     void Update()
     {
@@ -33,7 +18,9 @@ public class StageDirector : MonoBehaviour
             so.enabled = overlayIntensity > 0.01f;
         }
     }
+    #endregion
 
+    #region AnimationClip Events
     public void StartMusic()
     {
         Debug.Log("StartMusic");
@@ -46,24 +33,22 @@ public class StageDirector : MonoBehaviour
 
     public void SwitchCamera(int index)
     {
-        if (mainCameraSwitcher)
-            mainCameraSwitcher.ChangePosition(cameraPoints[index], true);
+        Debug.LogFormat("SwitchCamera: {0}", index);
     }
 
     public void StartAutoCameraChange()
     {
-        if (mainCameraSwitcher)
-            mainCameraSwitcher.StartAutoChange();
+        Debug.Log("StartAutoCameraChange");
     }
 
     public void StopAutoCameraChange()
     {
-        if (mainCameraSwitcher)
-            mainCameraSwitcher.StopAutoChange();
+        Debug.Log("StopAutoCameraChange");
     }
 
     public void EndPerformance()
     {
-        Application.LoadLevel(0);
+        Debug.Log("EndPerformance");
     }
+    #endregion
 }
