@@ -15,21 +15,26 @@ namespace UnityChan
 			anim = GetComponent<Animator> ();
 		}
 
-/*
+        public bool use_gui;
+
 		void OnGUI ()
 		{
-			GUILayout.Box ("Face Update", GUILayout.Width (170), GUILayout.Height (25 * (animations.Length + 2)));
-			Rect screenRect = new Rect (10, 25, 150, 25 * (animations.Length + 1));
-			GUILayout.BeginArea (screenRect);
-			foreach (var animation in animations) {
-				if (GUILayout.RepeatButton (animation.name)) {
-					anim.CrossFade (animation.name, 0);
-				}
-			}
-			isKeepFace = GUILayout.Toggle (isKeepFace, " Keep Face");
-			GUILayout.EndArea ();
+            if (use_gui)
+            {
+                GUILayout.Box("Face Update", GUILayout.Width(170), GUILayout.Height(25 * (animations.Length + 2)));
+                Rect screenRect = new Rect(10, 25, 150, 25 * (animations.Length + 1));
+                GUILayout.BeginArea(screenRect);
+                foreach (var animation in animations)
+                {
+                    if (GUILayout.RepeatButton(animation.name))
+                    {
+                        anim.CrossFade(animation.name, 0);
+                    }
+                }
+                isKeepFace = GUILayout.Toggle(isKeepFace, " Keep Face");
+                GUILayout.EndArea();
+            }
 		}
-*/
 
 		float current = 0;
 
@@ -47,7 +52,8 @@ namespace UnityChan
 
 		//アニメーションEvents側につける表情切り替え用イベントコール
 		public void OnCallChangeFace (string str)
-		{   
+		{
+            Debug.LogFormat("OnCallChangeFace: {0}", str);
 			int ichecked = 0;
 			foreach (var animation in animations) {
 				if (str == animation.name) {

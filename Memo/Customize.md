@@ -58,12 +58,18 @@ CandyRockStarとLipSyncControllerのAnimatorからControllerを取り除く。
 再生してみる。
 それなりいうまく動いてタイムラインをシークすると音楽とモーションが同期するようになった。
 しかし、UnityChanが最初目を閉じなくなったなど微妙に動きが不完全。
-もともとAnimatorで設定していたアニメーションレイヤーFaceとHandExpressionが無い状態になったためだ。これは後に回して先に進めよう。
+もともとAnimatorで設定していたアニメーションレイヤーFaceとHandExpressionが無い状態になったためだ。
 
-今後の課題。
+### HandExpressionとFace
 
-* アニメーションレイヤー
-* FastForward(ショートバージョン対応)
+* https://www.slideshare.net/nyaakobayashi/making-of-in-comicmarket-86
+
+HandExpressionレイヤーにHandExpressionモーションを適用していることがわかった。
+Timelineでレイヤーを使うにはAvatarMaskに同じものを適用すればよさげだが・・・
+
+CandyRockStarアニメーショントラックにOverlayトラックを追加。AvatarMask ``UnityChan/Animators/HandOnlyMask``を適用。HandExpressionアニメーションクリップを投入。
+手がアニメーションするようになった。
+このHandExpressionアニメーションクリップにアニメーションイベントとして表情変更イベントOnCallChangeFaceが定義されている。 CandyRockStarにアタッチされているFaceUpdate.OnCallChangeFace関数の実行が期待されるが現状動かず。FaceUpdate.OnCallChangeFaceからAnimatorControllerのFaceレイヤーに処理が流れるので、Timeline化したときにAnimatorControllerを取り除いたことで動かなくなっている。BlendShapeをTimelineと親和性の高い形で駆動する方法をなんか考えよう。
 
 ### ActivatePropsをタイムラインに乗せる
 
@@ -231,6 +237,11 @@ public class EndPerformance : MonoBehaviour {
 これが発動するとシーンがリロードされて最初に戻る。
 ここまででStageDirectorをTimelineに置き換えて見通しが良くなったと思う。
 次から改造してみる。
+
+## どうやってFaceアニメーションしているのか
+
+オリジナルのシーンを再生してMocapC86アニメーションコントローラーの動きを見ていると、
+Faceレイヤーでは時々表情が切り替わるのだけど、どこから発令されているのか。
 
 ## default Timeline
 
