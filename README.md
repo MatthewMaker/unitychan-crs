@@ -1,4 +1,4 @@
-![改造メモ](Customize.md)
+![改造メモ](Memo/Customize.md)
 
 Unity-Chan "Candy Rock Star" Public Repository
 ----------------------------------------------
