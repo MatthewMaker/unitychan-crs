@@ -7,7 +7,6 @@ public class StageDirector : MonoBehaviour
     public bool ignoreFastForward = true;
 
     // Prefabs.
-    public GameObject musicPlayerPrefab;
     public GameObject mainCameraRigPrefab;
     public GameObject[] prefabsNeedsActivation;
     public GameObject[] prefabsOnTimeline;
@@ -29,8 +28,6 @@ public class StageDirector : MonoBehaviour
     void Awake()
     {
         // Instantiate the prefabs.
-        musicPlayer = (GameObject)Instantiate(musicPlayerPrefab);
-
         var cameraRig = (GameObject)Instantiate(mainCameraRigPrefab);
         mainCameraSwitcher = cameraRig.GetComponentInChildren<CameraSwitcher>();
         screenOverlays = cameraRig.GetComponentsInChildren<ScreenOverlay>();
@@ -57,6 +54,7 @@ public class StageDirector : MonoBehaviour
 
     public void StartMusic()
     {
+        Debug.Log("StartMusic");
         foreach (var source in musicPlayer.GetComponentsInChildren<AudioSource>())
             source.Play();
     }

@@ -2,7 +2,7 @@
 
 * Unity2017.2.0f3
 
-## UnityChanStage/Director/StageDirector.csを[PlayableDirector](https://docs.unity3d.com/Manual/class-PlayableDirector.html)に置き換えてみる
+## Assets/UnityChanStage/Director/StageDirector.csを[PlayableDirector](https://docs.unity3d.com/Manual/class-PlayableDirector.html)に置き換えてみる
 
 [プロジェクトの基本構造について](https://github.com/unity3d-jp/unitychan-crs/wiki)の解説によると
 
@@ -30,6 +30,20 @@ StageDirectorのOverlayIntensityに注目していると値が流れ込んでい
 ・・・しかし、音が鳴らぬ。
 どうやらアニメーションクリップイベント(StartMusic)が来ていないぽい。
 使い方が悪いのか現状そういうものなのかよくわからないが、イベントはTimeline上に別のトラックとして移植していくことにしよう。
+
+### MusicPlayer
+
+MusicPlayerプレハブをシーンにインスタンス化。
+StageDirector.csからMusicPlayerのプレハブをインスタンス化するコードを削除。
+TimelineにAudioトラックを追加して``Unite In The Sky(full)``を投入。
+StageDirectorアニメーションクリップのStartMusicのタイミングを確認して、``Unite In The Sky(full)``クリップの始まる時間を2秒に設定。
+AudioトラックのAudioSourceにMusicPlayerの子オブジェクトMainを設定。
+再生してみる。
+・・・曲と踊りのタイミングがあっていないような。
+PlayableDirectorのUpdate MethodをUnscaled Game Timeに変えてみたら良くなったような気がする。
+Spectrum 1, 2, 3, 4用のAudioTrackをコピペで追加した。
+
+![audiotrack](audiotracks.jpg)
 
 ### CameraRig
 
