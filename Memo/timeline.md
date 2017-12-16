@@ -1,8 +1,4 @@
-# UnityChan CRS 解読メモ
-
-* Unity2017.2.0f3
-
-## Assets/UnityChanStage/Director/StageDirector.csを[PlayableDirector](https://docs.unity3d.com/Manual/class-PlayableDirector.html)に置き換えてみる
+# Assets/UnityChanStage/Director/StageDirector.csを[PlayableDirector](https://docs.unity3d.com/Manual/class-PlayableDirector.html)に置き換えてみる
 
 [プロジェクトの基本構造について](https://github.com/unity3d-jp/unitychan-crs/wiki)の解説によると
 
@@ -20,7 +16,7 @@ StartMusic, ActivateProps, SwitchCamera(int 0), StartAutoCameraChange, StopAutoC
 
 やってみよう。
 
-### 新規タイムライン
+## 新規タイムライン
 
 Timeline Windowを開いてヒエラルキーでStageDirectorを選択して、Timeline Windowのcreateを押す。Assets/StageDirectorTimeline.palyableで保存した。
 Timelineのトラックに、StageDirectorアニメーションクリップを投入。
@@ -31,7 +27,7 @@ StageDirectorのOverlayIntensityに注目していると値が流れ込んでい
 どうやらアニメーションクリップイベント(StartMusic)が来ていないぽい。
 使い方が悪いのか現状そういうものなのかよくわからないが、イベントはTimeline上に別のトラックとして移植していくことにしよう。
 
-### MusicPlayer
+## MusicPlayer
 
 MusicPlayerプレハブをシーンにインスタンス化。
 StageDirector.csからMusicPlayerのプレハブをインスタンス化するコードを削除。
@@ -45,7 +41,7 @@ Spectrum 1, 2, 3, 4用のAudioTrackをコピペで追加した。
 
 ![audiotrack](audiotracks.jpg)
 
-### CandyRockStarとLipSyncController(Prefabs On Timeline)
+## CandyRockStarとLipSyncController(Prefabs On Timeline)
 
 次はUnityちゃんをタイムラインに乗せてみよう。
 
@@ -60,7 +56,7 @@ CandyRockStarとLipSyncControllerのAnimatorからControllerを取り除く。
 しかし、UnityChanが最初目を閉じなくなったなど微妙に動きが不完全。
 もともとAnimatorで設定していたアニメーションレイヤーFaceとHandExpressionが無い状態になったためだ。
 
-### HandExpressionとFace
+## HandExpressionとFace
 
 * https://www.slideshare.net/nyaakobayashi/making-of-in-comicmarket-86
 
@@ -71,7 +67,7 @@ CandyRockStarアニメーショントラックにOverlayトラックを追加。
 手がアニメーションするようになった。
 このHandExpressionアニメーションクリップにアニメーションイベントとして表情変更イベントOnCallChangeFaceが定義されている。 CandyRockStarにアタッチされているFaceUpdate.OnCallChangeFace関数の実行が期待されるが現状動かず。FaceUpdate.OnCallChangeFaceからAnimatorControllerのFaceレイヤーに処理が流れるので、Timeline化したときにAnimatorControllerを取り除いたことで動かなくなっている。BlendShapeをTimelineと親和性の高い形で駆動する方法をなんか考えよう。
 
-### ActivatePropsをタイムラインに乗せる
+## ActivatePropsをタイムラインに乗せる
 
 StageDirectorを読むと、prefabsNeedsActivationに設定されたプレハブをインスタンス化して、ActivatePropsイベントに応じてBroadcastMessage("ActivateProps")するというコードがある。StageDirectorアニメーションクリップをチェックすると開始から2.5秒のところで、ActivatePropsアニメーションイベントが発行される。プロジェクトを"ActivateProps"で検索すると``UnityChanStage/Director/PropActivator.cs``がActivateProps関数を持っていることがわかる。PropActivatorは、ActivatePropsで子オブジェクトのSetActive(true)を呼び出す。
 
@@ -99,7 +95,7 @@ Stageプレハブをインスタンス化。ActivationTrackを追加。Activatio
 あと、StageDirectorからはインスタンス化以外のことをしていないMiscPrefabsをシーンにインスタン化した。
 Back Screen, Back Screen Camera Rig, Background, Character Light, Visualizerの５つ。
 
-### MainCameraRigをインスタンス化してカメラ制御をタイムラインに乗せる
+## MainCameraRigをインスタンス化してカメラ制御をタイムラインに乗せる
 MainCameraRigをシーンにインスタンス化する。
 StageDirectorからカメラ関連のコードを削除する。
 StageDirectorアニメーションクリップが更新するStageDirector.overlayIntensityをScreenOverlayに反映するだけの単機能スクリプトになった。
@@ -236,24 +232,4 @@ public class EndPerformance : MonoBehaviour {
 
 これが発動するとシーンがリロードされて最初に戻る。
 ここまででStageDirectorをTimelineに置き換えて見通しが良くなったと思う。
-次から改造してみる。
-
-## どうやってFaceアニメーションしているのか
-
-オリジナルのシーンを再生してMocapC86アニメーションコントローラーの動きを見ていると、
-Faceレイヤーでは時々表情が切り替わるのだけど、どこから発令されているのか。
-
-## default Timeline
-
-## PostEffect
-
-## UnityChan Shader
-
-## 歌詞
-
-## CameraMachine
-
-## 動画
-
-## Gif動画
 
