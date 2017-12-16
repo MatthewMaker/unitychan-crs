@@ -20,15 +20,22 @@ StartMusic, ActiveProps, SwitchCamera(int 0), StartAutoCameraChange, StopAutoCam
 
 やってみよう。
 
+### 新規タイムライン
 
+Timeline Windowを開いてヒエラルキーでStageDirectorを選択して、Timeline Windowのcreateを押す。Assets/StageDirectorTimeline.palyableで保存した。
+Timelineのトラックに、StageDirectorアニメーションクリップを投入。
+これでTimelineからStageDirectorのAnimatorを駆動するようになったので、AnimatorからControllerを取り除く。
+再生してみる。
+StageDirectorのOverlayIntensityに注目していると値が流れ込んでいることがわかる。
+・・・しかし、音が鳴らぬ。
+どうやらアニメーションクリップイベント(StartMusic)が来ていないぽい。
+使い方が悪いのか現状そういうものなのかよくわからないが、イベントはTimeline上に別のトラックとして移植していくことにしよう。
 
 ### CameraRig
 
 ### Overlay
 
 ### Confetti, Stage, CandyRockStar, LipSyncController, Back Screen, Back Screen Camera Rig, Background, Character Light, Visualizer
-
-諸々、シーンに展開してTimelineに乗せてみた。
 
 ## default Timeline
 
