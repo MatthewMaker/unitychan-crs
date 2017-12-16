@@ -5,8 +5,6 @@ public class StageDirector : MonoBehaviour
 {
     // Prefabs.
     public GameObject mainCameraRigPrefab;
-    public GameObject[] prefabsNeedsActivation;
-    public GameObject[] miscPrefabs;
 
     // Camera points.
     public Transform[] cameraPoints;
@@ -25,12 +23,6 @@ public class StageDirector : MonoBehaviour
         var cameraRig = (GameObject)Instantiate(mainCameraRigPrefab);
         mainCameraSwitcher = cameraRig.GetComponentInChildren<CameraSwitcher>();
         screenOverlays = cameraRig.GetComponentsInChildren<ScreenOverlay>();
-
-        objectsNeedsActivation = new GameObject[prefabsNeedsActivation.Length];
-        for (var i = 0; i < prefabsNeedsActivation.Length; i++)
-            objectsNeedsActivation[i] = (GameObject)Instantiate(prefabsNeedsActivation[i]);
-
-        foreach (var p in miscPrefabs) Instantiate(p);
     }
 
     void Update()
@@ -49,7 +41,7 @@ public class StageDirector : MonoBehaviour
 
     public void ActivateProps()
     {
-        foreach (var o in objectsNeedsActivation) o.BroadcastMessage("ActivateProps");
+        Debug.Log("ActivateProps");
     }
 
     public void SwitchCamera(int index)
