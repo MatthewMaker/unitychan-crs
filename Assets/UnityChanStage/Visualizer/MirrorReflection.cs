@@ -29,6 +29,10 @@ public class MirrorReflection : MonoBehaviour
 		Camera cam = Camera.current;
 		if (!cam)
 			return;
+        if (cam.orthographic)
+        {
+            return;
+        }
 
 		// Safeguard from recursive reflections.
 		if (s_InsideRendering)
