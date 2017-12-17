@@ -147,7 +147,7 @@ public class TextSwitcherTrackUtil : MonoBehaviour
             //continue;
             var textSwitcher = CreatePlayableAsset<TextSwitcherClip>(m_dst, clip.Text);
 
-            // textSwitcher.text = clip.Text;
+            textSwitcher.text = clip.Text;
 
             var timelineClip = track.CreateDefaultClip();
             timelineClip.asset = textSwitcher;

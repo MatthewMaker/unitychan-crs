@@ -31,7 +31,7 @@ Assertion failed: Screen position out of view frustum (screen pos 1024.000000, 0
 ```
 
 TimelineにDefault Playablesで追加された``Text Switcher Track``を追加。オブジェクトに最初に作った``UI-Text``を設定。
-クリップを適当に追加再生してみる。
+再生して指定のタイミングでテキストが表示されることを確認できた。
 
 [Unityちゃん](http://unity-chan.com/)からキャラクターソング・アルバム Vol.1「UNITE IN THE SKY」入手。
 
@@ -44,31 +44,59 @@ TimelineにDefault Playablesで追加された``Text Switcher Track``を追加�
 うれしはずかし 木霊し 参りまして
 ```
 
-テキストからクリップを投入するツールを作ってみる。
-Editorで完結させたいところだがとりあえずプレイしたら動作するものを作る。
+手で全部入力するのも何なのでテキストからTextSwitcherTrackにTextSwitcherClipを投入するツールを作ってみる。
+Editorで完結させたいところだがとりあえずプレイしたら動作するものを作った。
 
 * [TimelineAssetをEditor用Scriptから生成するメモ](https://qiita.com/furai13/items/d2048d49dde45823b3de)
 
-わからんかった。
 TimlineClipを作って時間を指定するところまではできたが、
-TextSwitcherClipに固有のtext等を設定する方法が不明。
-残念。
+TextSwitcherClipに固有のtext等を設定する方法がわからんかった。
+
+![textswitchertrack](textswitchertrack.jpg)
 
 * [TextSwitcherTrackUtil](../Assets/TextSwitcherTrackUtil.cs)
 
-以下のような感じになっているような気はするのだがPlayableのAPIがわかってからやろう。
-
-```
-runtime              asset
-====================================
-                     TimelineAsset
-                           ↓
-                     TrackableAsset
-                           ↓
-PlayableBehaviour -> PlayableAsset
-```
+わかったら更新する。
+残念。
 
 ![textswitcher.jpg](textswitcher.jpg)
+
+## なんとなくわかった？
+スクリプトからTextSwitcherClipに値を入れる方法がわかった。
+
+* Assets/DefaultPlayables/TextSwitcher/Editorを削除
+* Assets/DefaultPlayables/TextSwitcher/TextSwitcherClipを改造
+
+```cs
+[Serializable]
+public class TextSwitcherClip : PlayableAsset, ITimelineClipAsset
+{
+    public ClipCaps clipCaps
+    {
+        get { return ClipCaps.Blending; }
+    }
+
+    public Color color = Color.white;
+    public int fontSize = 14;
+    public string text;
+
+    public override Playable CreatePlayable(PlayableGraph graph, GameObject owner)
+    {
+        var playable = ScriptPlayable<TextSwitcherBehaviour>.Create(graph);
+        var behaviour = playable.GetBehaviour();
+        behaviour.color = color;
+        behaviour.fontSize = fontSize;
+        behaviour.text = text;
+        return playable;
+    }
+}
+```
+
+DefaultPlayablesが本体の更新に追随できてないんじゃないかとか推察。
+作った時には、PlayableAssetのpublic fieldがクリップのインスペクタに表示される機能が無かったんではないかと。
+2017.2ではPlayableAssetのpublic fieldがインスペクタに表示されるのでこっちに設定項目を入れておいて、
+PlayableBehaviourに``CreatePlayable``で値をセットしてやるというスタイルになったんでないか。
+情報が少なくてよくわからぬ。
 
 ## Trackを自作してみる
 
