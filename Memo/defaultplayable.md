@@ -98,6 +98,8 @@ DefaultPlayablesが本体の更新に追随できてないんじゃないかと�
 PlayableBehaviourに``CreatePlayable``で値をセットしてやるというスタイルになったんでないか。
 情報が少なくてよくわからぬ。
 
+``TextSwitcherTrack.GatherProperties``もなんかエラーが出るので削除してよいのではないか。
+
 ## Trackを自作してみる
 
 * [【Unity】Timelineの独自Playableを超簡単に作るウィザード](http://tsubakit1.hateblo.jp/entry/2017/10/15/195736)

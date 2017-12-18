@@ -4,9 +4,10 @@
 
 * [StageDirectorをTimeline(PlayableDirector)で置き換える](timeline.md)
 * [DefaultPayable導入](defaultplayable.md)
+* [Post-processing Stack導入](postprocessing.md)
 
 以下気になっているところ
 
-* Post-processing Stack導入
 * ユニティちゃんトゥーンシェーダー2.0導入
 * Cinemachine導入
+
