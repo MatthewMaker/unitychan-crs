@@ -61,4 +61,9 @@ DOFの目標距離を設定するコードをCameraSwitcher.Updateに追加。
 
 なんかそれっぽい感じに。
 
+## 調整
+
 * https://github.com/Unity-Technologies/PostProcessing/wiki
+
+## 床の鏡をScreenSpaceReflectionで置き換えてみる
+
