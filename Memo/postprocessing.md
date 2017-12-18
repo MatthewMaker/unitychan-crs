@@ -1,4 +1,6 @@
-# [Post Processing Stack](https://www.assetstore.unity3d.com/jp/#!/content/83912)の導入
+# [Post Processing Stack](https://docs.unity3d.com/Manual/PostProcessing-Stack.html)の導入
+
+https://www.assetstore.unity3d.com/jp/#!/content/83912
 
 * [Unity5.6のImageEffects消えた話と新エフェクトPost Processing Stack](https://thattown.wixsite.com/thattown/single-post/2017/06/07/Unity56%25E3%2581%25AEImageEffects%25E6%25B6%2588%25E3%2581%2588%25E3%2581%259F%25E8%25A9%25B1%25E3%2581%25A8%25E6%2596%25B0%25E3%2582%25A8%25E3%2583%2595%25E3%2582%25A7%25E3%2582%25AF%25E3%2583%2588Post-Processing-Stack)
 
@@ -35,7 +37,7 @@ CameraにPostProcessBehaviourをアタッチしてPostProcessProfileをセット
 * Bloom -> Bloom
 * Vignetting -> Vignetting
 * Antialiasing As Post Effect -> Antialiasing
-* Jitter Motion -> 無い
+* Jitter Motion -> 無い。Cinemachineでできるんでないか。
 * Screen Overlay　-> 無い
 
 とりあえず設定してみた。
@@ -65,5 +67,9 @@ DOFの目標距離を設定するコードをCameraSwitcher.Updateに追加。
 
 * https://github.com/Unity-Technologies/PostProcessing/wiki
 
+ToDo
+
 ## 床の鏡をScreenSpaceReflectionで置き換えてみる
+
+ToDo
 
