@@ -14,6 +14,7 @@ public class TextSwitcherTrack : TrackAsset
         return ScriptPlayable<TextSwitcherMixerBehaviour>.Create (graph, inputCount);
     }
 
+#if false
     public override void GatherProperties (PlayableDirector director, IPropertyCollector driver)
     {
 #if UNITY_EDITOR
@@ -33,4 +34,5 @@ public class TextSwitcherTrack : TrackAsset
 #endif
         base.GatherProperties (director, driver);
     }
+#endif
 }
