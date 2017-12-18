@@ -18,9 +18,47 @@ ImageEffectにアクセスしているコードも取り除く。
 
 再生して動作確認。
 
-JavaScriptで記述されていた旧ImageEffect周りのコードが原因でVisuaslStudioからUnityにアタッチできなかったのが解消された。
+JavaScriptで記述されていた旧ImageEffect周りのコードが原因でVisuaslStudioからUnityにアタッチできなかったのが解消されてステップ実行できるようになった。削除したのはこれが目的。
 
 ## PostProcessingStack
 
 AssetStoreからImport。
+ProjectにPostProcessProfileを作成。
+CameraにPostProcessBehaviourをアタッチしてPostProcessProfileをセット。
 
+早速設定してみる。
+
+* GUILayer -> 無い。多分不要
+* Flare Layer -> 無い
+* Global Fog -> Fog
+* Depth Of Field Scatter -> Depth Of Field。あとでCameraSwitcherにあった距離設定をPostProcessingStack向けに復活させる。
+* Bloom -> Bloom
+* Vignetting -> Vignetting
+* Antialiasing As Post Effect -> Antialiasing
+* Jitter Motion -> 無い
+* Screen Overlay　-> 無い
+
+とりあえず設定してみた。
+DOFの目標距離を設定するコードをCameraSwitcher.Updateに追加。
+
+```cs
+        // Update DOF
+        if (m_postprocessing != null)
+        {
+            var settings = m_postprocessing.profile.depthOfField.settings;
+            m_postprocessing.profile.depthOfField.settings = new UnityEngine.PostProcessing.DepthOfFieldModel.Settings
+            {
+                focusDistance = (target.transform.position - transform.position).magnitude,
+                aperture = settings.aperture,
+                focalLength = settings.focalLength,
+                kernelSize = settings.kernelSize,
+                useCameraFov = settings.useCameraFov,
+            };
+        }
+```
+
+![postprocessing](postprocessing.jpg)
+
+なんかそれっぽい感じに。
+
+* https://github.com/Unity-Technologies/PostProcessing/wiki
