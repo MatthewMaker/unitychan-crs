@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.PostProcessing;
 
+[ExecuteInEditMode]
 public class AutoFocus : MonoBehaviour
 {
     [SerializeField]

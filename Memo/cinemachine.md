@@ -28,6 +28,7 @@ Timelineからカメラ関連のトラックをミュートにして、CameraSwi
 AssetStoreからImport。
 https://www.assetstore.unity3d.com/en/#!/content/79898
 
+
 CinemachineメニューからCreateVirtualCamera。
 すると・・・
 
@@ -42,6 +43,7 @@ MirrorReflectionを無効にした。後でPostProcessingStackのものと置き
 
 CameraSwitcherで使っていたCameraPointにいくつかCinemachineのVirtualCameraを設置してみる。
 とりあえず、Close-up, Close-up2, Finaleの３つを設置。
+Close-up2をMiddleに名前変える。
 FinaleをLongに名前変える。
 TimelineにCinemachineのトラックを作る。
 元のカメラのタイムラインのTimelineのClose-up, Close-up2を設定していた時間にクリップを追加してそれぞれのバーチャルカメラを設定、余ったところにクリップを作って全部Longを設定。

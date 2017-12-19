@@ -10,10 +10,13 @@ public class CameraSwitcher : MonoBehaviour
     public float rotationSpeed = 2.0f;
     public float minDistance = 0.5f;
     public AnimationCurve fovCurve = AnimationCurve.Linear(1, 30, 10, 30);
-    public bool autoChange = true;
+    //public bool autoChange = true;
 
     Transform target;
     Vector3 followPoint;
+
+    [SerializeField]
+    Cinemachine.CinemachineVirtualCamera m_camera;
 
     void Start()
     {
@@ -26,26 +29,24 @@ public class CameraSwitcher : MonoBehaviour
         //if (dofFx) dofFx.focalTransform = target;
 
         // Start auto-changer if it's enabled.
-        if (autoChange) StartAutoChange();
+        StartCoroutine(Routine());
     }
 
+#if false
     void Update()
     {
-#if false
         // Update the follow point with the exponential easing function.
         var param = Mathf.Exp(-rotationSpeed * Time.deltaTime);
         followPoint = Vector3.Lerp(target.position, followPoint, param);
 
         // Look at the follow point.
         transform.LookAt(followPoint);
+}
 #endif
-    }
 
     // Change the camera position.
-    public void ChangePosition(Transform destination, bool forceStable = false)
+    void ChangePosition(Transform destination, bool forceStable = false)
     {
-        return;
-
         // Do nothing if disabled.
         if (!enabled) return;
 
@@ -60,7 +61,11 @@ public class CameraSwitcher : MonoBehaviour
 
         // Update the FOV depending on the distance to the target.
         var dist = Vector3.Distance(target.position, transform.position);
-        GetComponentInChildren<Camera>().fieldOfView = fovCurve.Evaluate(dist);
+        //Camera.main.fieldOfView = fovCurve.Evaluate(dist);
+        if (m_camera != null)
+        {
+            m_camera.m_Lens.FieldOfView = fovCurve.Evaluate(dist);
+        }
     }
 
     // Choose a point other than the current.
@@ -75,22 +80,12 @@ public class CameraSwitcher : MonoBehaviour
     }
 
     // Auto-changer.
-    IEnumerator AutoChange()
+    IEnumerator Routine()
     {
         for (var current = points[0]; true; current = ChooseAnotherPoint(current))
         {
             ChangePosition(current);
             yield return new WaitForSeconds(interval);
         }
-    }
-
-    public void StartAutoChange()
-    {
-        StartCoroutine("AutoChange");
-    }
-
-    public void StopAutoChange()
-    {
-        StopCoroutine("AutoChange");
     }
 }

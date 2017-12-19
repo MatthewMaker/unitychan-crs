@@ -15,6 +15,7 @@ public class LightControlTrack : TrackAsset
 
     public override void GatherProperties (PlayableDirector director, IPropertyCollector driver)
     {
+#if false
 #if UNITY_EDITOR
         Light trackBinding = director.GetGenericBinding(this) as Light;
         if (trackBinding == null)
@@ -29,6 +30,7 @@ public class LightControlTrack : TrackAsset
 
             driver.AddFromName<Light>(trackBinding.gameObject, iterator.propertyPath);
         }
+#endif
 #endif
         base.GatherProperties (director, driver);
     }
