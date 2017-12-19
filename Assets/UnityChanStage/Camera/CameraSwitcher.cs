@@ -34,12 +34,14 @@ public class CameraSwitcher : MonoBehaviour
 
     void Update()
     {
+#if false
         // Update the follow point with the exponential easing function.
         var param = Mathf.Exp(-rotationSpeed * Time.deltaTime);
         followPoint = Vector3.Lerp(target.position, followPoint, param);
 
         // Look at the follow point.
         transform.LookAt(followPoint);
+#endif
 
         // Update DOF
         if (m_postprocessing != null)
@@ -59,6 +61,8 @@ public class CameraSwitcher : MonoBehaviour
     // Change the camera position.
     public void ChangePosition(Transform destination, bool forceStable = false)
     {
+        return;
+
         // Do nothing if disabled.
         if (!enabled) return;
 

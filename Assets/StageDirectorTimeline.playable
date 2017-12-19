@@ -1217,7 +1217,7 @@ MonoBehaviour:
   m_Name: Activation Track
   m_EditorClassIdentifier: 
   m_Locked: 0
-  m_Muted: 0
+  m_Muted: 1
   m_CustomPlayableFullTypename: 
   m_AnimClip: {fileID: 0}
   m_Parent: {fileID: 114077035678181922}
@@ -5504,7 +5504,7 @@ MonoBehaviour:
   m_Name: Activation Track (7)
   m_EditorClassIdentifier: 
   m_Locked: 0
-  m_Muted: 0
+  m_Muted: 1
   m_CustomPlayableFullTypename: 
   m_AnimClip: {fileID: 0}
   m_Parent: {fileID: 114077035678181922}
@@ -8021,7 +8021,7 @@ MonoBehaviour:
   m_Name: Activation Track (6)
   m_EditorClassIdentifier: 
   m_Locked: 0
-  m_Muted: 0
+  m_Muted: 1
   m_CustomPlayableFullTypename: 
   m_AnimClip: {fileID: 0}
   m_Parent: {fileID: 114077035678181922}
@@ -11618,7 +11618,7 @@ MonoBehaviour:
   m_Name: Activation Track
   m_EditorClassIdentifier: 
   m_Locked: 0
-  m_Muted: 0
+  m_Muted: 1
   m_CustomPlayableFullTypename: 
   m_AnimClip: {fileID: 0}
   m_Parent: {fileID: 114077035678181922}
