@@ -15,9 +15,6 @@ public class CameraSwitcher : MonoBehaviour
     Transform target;
     Vector3 followPoint;
 
-    [SerializeField]
-    UnityEngine.PostProcessing.PostProcessingBehaviour m_postprocessing;
-
     void Start()
     {
         // Target information.
@@ -42,20 +39,6 @@ public class CameraSwitcher : MonoBehaviour
         // Look at the follow point.
         transform.LookAt(followPoint);
 #endif
-
-        // Update DOF
-        if (m_postprocessing != null)
-        {
-            var settings = m_postprocessing.profile.depthOfField.settings;
-            m_postprocessing.profile.depthOfField.settings = new UnityEngine.PostProcessing.DepthOfFieldModel.Settings
-            {
-                focusDistance = (target.transform.position - transform.position).magnitude,
-                aperture = settings.aperture,
-                focalLength = settings.focalLength,
-                kernelSize = settings.kernelSize,
-                useCameraFov = settings.useCameraFov,
-            };
-        }
     }
 
     // Change the camera position.

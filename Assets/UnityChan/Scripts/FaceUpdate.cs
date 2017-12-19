@@ -46,7 +46,7 @@ namespace UnityChan
 			} else if (!isKeepFace) {
 				current = Mathf.Lerp (current, 0, delayWeight);
 			}
-			anim.SetLayerWeight (1, current);
+			//anim.SetLayerWeight (1, current);
 		}
 	 
 
