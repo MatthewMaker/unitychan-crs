@@ -102,5 +102,6 @@ PlayableBehaviourに``CreatePlayable``で値をセットしてやるというス
 
 ## Trackを自作してみる
 
-* [【Unity】Timelineの独自Playableを超簡単に作るウィザード](http://tsubakit1.hateblo.jp/entry/2017/10/15/195736)
+* [Timeline (Unity 2017b5) Fade sample](https://gist.github.com/tsubaki/841bf990affab423b80ff4c5949670f9)
 
+PostProcessingStack導入で消してしまったScreenOverlayの代替品を作ってみよう。
