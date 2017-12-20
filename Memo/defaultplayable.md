@@ -100,8 +100,12 @@ PlayableBehaviourに``CreatePlayable``で値をセットしてやるというス
 
 ``TextSwitcherTrack.GatherProperties``もなんかエラーが出るので削除してよいのではないか。
 
-## Trackを自作してみる
+## [Timeline (Unity 2017b5) Fade sample](https://gist.github.com/tsubaki/841bf990affab423b80ff4c5949670f9)
 
-* [Timeline (Unity 2017b5) Fade sample](https://gist.github.com/tsubaki/841bf990affab423b80ff4c5949670f9)
+PostProcessingStack導入で消してしまったScreenOverlayの代替品を作れる。
 
-PostProcessingStack導入で消してしまったScreenOverlayの代替品を作ってみよう。
+* PlayableBehaviour(Mixer) => Playable
+* PlayableAsset(Clip) => Timeline用
+* PlayableTrack => Timeline用
+
+となっていて作るとTimelineで右クリックするとPlayableTrack名のトラックの追加メニューが出現する。
