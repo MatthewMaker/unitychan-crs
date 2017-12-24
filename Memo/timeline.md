@@ -36,7 +36,7 @@ StageDirectorアニメーションクリップのStartMusicのタイミングを
 AudioトラックのAudioSourceにMusicPlayerの子オブジェクトMainを設定。
 再生してみる。
 ・・・曲と踊りのタイミングがあっていないような。
-PlayableDirectorのUpdate MethodをUnscaled Game Timeに変えてみたら良くなったような気がする。
+PlayableDirectorのUpdate Methodを音楽と合うように``DSP Clock``にした。
 Spectrum 1, 2, 3, 4用のAudioTrackをコピペで追加した。
 
 ![audiotrack](audiotracks.jpg)

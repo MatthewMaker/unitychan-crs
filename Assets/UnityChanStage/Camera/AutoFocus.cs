@@ -1,12 +1,14 @@
 ﻿using UnityEngine;
-using UnityEngine.PostProcessing;
+
+//using UnityEngine.PostProcessing;
 
 [ExecuteInEditMode]
 public class AutoFocus : MonoBehaviour
 {
+#if UNITY_POST_PROCESSING_STACK_V1
     [SerializeField]
     PostProcessingBehaviour m_postprocessing;
-
+    Po
     [SerializeField]
     GameObject m_target;
 
@@ -27,4 +29,5 @@ public class AutoFocus : MonoBehaviour
             useCameraFov = settings.useCameraFov,
         };
     }
+#endif
 }
