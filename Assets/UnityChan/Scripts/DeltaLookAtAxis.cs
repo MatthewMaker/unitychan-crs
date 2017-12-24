@@ -70,7 +70,7 @@ namespace UnityChan
 			xyDelta = new Vector2((-dirVector.z) * multiplierX, dirVector.x * multiplierY);
 			//Debug.Log ("xyDelta is " + xyDelta);
 			//マッピングしたdeltaをuvオフセット値に設定する.
-			eyeObj.material.SetTextureOffset("_MainTex", xyDelta);
+			eyeObj.sharedMaterial.SetTextureOffset("_MainTex", xyDelta);
 		}
 	}
 }

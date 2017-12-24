@@ -16,7 +16,7 @@ public class CameraSwitcher : MonoBehaviour
     Vector3 followPoint;
 
     [SerializeField]
-    Cinemachine.CinemachineVirtualCamera m_camera;
+    Camera m_camera;
 
     void Start()
     {
@@ -32,7 +32,6 @@ public class CameraSwitcher : MonoBehaviour
         StartCoroutine(Routine());
     }
 
-#if false
     void Update()
     {
         // Update the follow point with the exponential easing function.
@@ -41,8 +40,7 @@ public class CameraSwitcher : MonoBehaviour
 
         // Look at the follow point.
         transform.LookAt(followPoint);
-}
-#endif
+    }
 
     // Change the camera position.
     void ChangePosition(Transform destination, bool forceStable = false)
@@ -64,7 +62,7 @@ public class CameraSwitcher : MonoBehaviour
         //Camera.main.fieldOfView = fovCurve.Evaluate(dist);
         if (m_camera != null)
         {
-            m_camera.m_Lens.FieldOfView = fovCurve.Evaluate(dist);
+            m_camera.fieldOfView = fovCurve.Evaluate(dist);
         }
     }
 

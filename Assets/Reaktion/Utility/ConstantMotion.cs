@@ -21,91 +21,128 @@
 // CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 using UnityEngine;
+using UnityEngine.Timeline;
 
-namespace Reaktion {
-
-public class ConstantMotion : MonoBehaviour
+namespace Reaktion
 {
-    public enum TransformMode {
-        Off, XAxis, YAxis, ZAxis, Arbitrary, Random
-    };
 
-    // A class for handling each transformation.
-    [System.Serializable]
-    public class TransformElement
+    public class ConstantMotion : MonoBehaviour, ITimeControl
     {
-        public TransformMode mode = TransformMode.Off;
-        public float velocity = 1;
-
-        // Used only in the arbitrary mode.
-        public Vector3 arbitraryVector = Vector3.up;
-
-        // Affects velocity.
-        public float randomness = 0;
-
-        // Randomizer states.
-        Vector3 randomVector;
-        float randomScalar;
-
-        public void Initialize()
+        public enum TransformMode
         {
-            randomVector = Random.onUnitSphere;
-            randomScalar = Random.value;
-        }
+            Off, XAxis, YAxis, ZAxis, Arbitrary, Random
+        };
 
-        // Get a vector corresponds to the current transform mode.
-        public Vector3 Vector {
-            get {
-                switch (mode)
+        // A class for handling each transformation.
+        [System.Serializable]
+        public class TransformElement
+        {
+            public TransformMode mode = TransformMode.Off;
+            public float velocity = 1;
+
+            // Used only in the arbitrary mode.
+            public Vector3 arbitraryVector = Vector3.up;
+
+            // Affects velocity.
+            public float randomness = 0;
+
+            // Randomizer states.
+            Vector3 randomVector;
+            float randomScalar;
+
+            public void Initialize()
+            {
+                randomVector = Random.onUnitSphere;
+                randomScalar = Random.value;
+            }
+
+            // Get a vector corresponds to the current transform mode.
+            public Vector3 Vector
+            {
+                get
                 {
-                    case TransformMode.XAxis:     return Vector3.right;
-                    case TransformMode.YAxis:     return Vector3.up;
-                    case TransformMode.ZAxis:     return Vector3.forward;
-                    case TransformMode.Arbitrary: return arbitraryVector;
-                    case TransformMode.Random:    return randomVector;
+                    switch (mode)
+                    {
+                        case TransformMode.XAxis: return Vector3.right;
+                        case TransformMode.YAxis: return Vector3.up;
+                        case TransformMode.ZAxis: return Vector3.forward;
+                        case TransformMode.Arbitrary: return arbitraryVector;
+                        case TransformMode.Random: return randomVector;
+                    }
+                    return Vector3.zero;
                 }
-                return Vector3.zero;
+            }
+
+            public float TimeDelta
+            {
+                get;
+                set;
+            }
+
+            // Get the current delta value.
+            public float Delta
+            {
+                get
+                {
+                    var scale = (1.0f - randomness * randomScalar);
+                    return velocity * scale * TimeDelta;
+                }
             }
         }
 
-        // Get the current delta value.
-        public float Delta {
-            get {
-                var scale = (1.0f - randomness * randomScalar);
-                return velocity * scale * Time.deltaTime;
+        public TransformElement position = new TransformElement();
+        public TransformElement rotation = new TransformElement { velocity = 30 };
+        public bool useLocalCoordinate = true;
+
+        void Awake()
+        {
+            position.Initialize();
+            rotation.Initialize();
+        }
+
+        double m_lastTime;
+
+        public void SetTime(double time)
+        {
+            if (m_lastTime != 0)
+            {
+                if (time == m_lastTime)
+                {
+                    return;
+                }
+                var d = (float)(time - m_lastTime);
+                position.TimeDelta = d;
+                rotation.TimeDelta = d;
+
+                if (position.mode != TransformMode.Off)
+                {
+                    if (useLocalCoordinate)
+                        transform.localPosition += position.Vector * position.Delta;
+                    else
+                        transform.position += position.Vector * position.Delta;
+                }
+
+                if (rotation.mode != TransformMode.Off)
+                {
+                    var delta = Quaternion.AngleAxis(rotation.Delta, rotation.Vector);
+                    if (useLocalCoordinate)
+                        transform.localRotation = delta * transform.localRotation;
+                    else
+                        transform.rotation = delta * transform.rotation;
+                }
             }
+            m_lastTime = time;
         }
-    }
 
-    public TransformElement position = new TransformElement();
-    public TransformElement rotation = new TransformElement{ velocity = 30 };
-    public bool useLocalCoordinate = true;
-
-    void Awake()
-    {
-        position.Initialize();
-        rotation.Initialize();
-    }
-
-    void Update()
-    {
-        if (position.mode != TransformMode.Off)
+        public void OnControlTimeStart()
         {
-            if (useLocalCoordinate)
-                transform.localPosition += position.Vector * position.Delta;
-            else
-                transform.position += position.Vector * position.Delta;
+            //throw new System.NotImplementedException();
         }
 
-        if (rotation.mode != TransformMode.Off)
+        public void OnControlTimeStop()
         {
-            var delta = Quaternion.AngleAxis(rotation.Delta, rotation.Vector);
-            if (useLocalCoordinate)
-                transform.localRotation = delta * transform.localRotation;
-            else
-                transform.rotation = delta * transform.rotation;
+            //throw new System.NotImplementedException();
         }
     }
-}
 
 } // namespace Reaktion

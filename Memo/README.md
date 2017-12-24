@@ -26,6 +26,7 @@ AudioTrackを作成して``Aasets/UniteInTheSky/Unite In The Sky(full)``オー�
 を繰り返し再生してこの辺かなというところに決めた。
 
 * 126フレームにした(60フレーム換算で2秒くらいなので元々そんなもんである)
+* やっぱ120フレームに。LipSyncを少しずらした
 
 アニメーショントラックを基準として曲のタイミングが合うようになった。
 
@@ -33,12 +34,15 @@ AudioTrackを作成して``Aasets/UniteInTheSky/Unite In The Sky(full)``オー�
 Animatorからコントローラーを取り外し。
 AnimationTrackを作成してLipSyncControllerをバインド。``Assets/UnityInTheSky/Animations/LipSync/Take 001``アニメーションクリップを投入。
 
+モーションを止めて口パクと曲のタイミングを眺めてタイミングを決めた。
+
+* Lipsync: 12フレーム
+
 UnityChanのモーションのトラックに``Add Overlay Track``する。トラックのAvatarMaskに``HandOnlyMask``をセット。
 ``Assets/UnityChan/Animations/Hand_Expression/HandExpression``アニメーショントラックを投入。
 
 見切れないようにCinemachineのVirtualCameraを設置。
 vcamの``Look At``に``CandyRockStar/Character1_Reference/Hips/Spine/Spine1/Spine2/Camera Target``をセット。
-Cinemacineトラックを作ってMainCameraをバインド。クリップを作成してモーションと同じ長さに設定して、virtual cameraに作ったvcamをセット。
 
 ![ss1](ss1.png)
 
@@ -76,7 +80,7 @@ HandExpressionのアニメーションクリップを眺めるとそこまで激
 
 ![blendshape](blendshape.png)
 
-[ソース](../Assets/g_Custom/Scripts/BlendShapeClip)
+[ソース](../Assets/_Custom/Scripts/BlendShapeClip)
 
 トラックの作り方が分かってきた。
 
@@ -148,7 +152,95 @@ LookAt更新用に作ったのだけど、``OnAnimatorIK``が呼ばれなかっ�
 ![lookat](lookat.png)
 
 ついでにAutoBlinkを有効にした。
-ずっとAutoBlinkだと干渉する場合があるのでActivationTrackを追加して、Unityちゃんが``default@unitychan``の時だけAutoBlinkが有効になるようにしてみた。
+ずっとAutoBlinkだとBlendShapeと干渉する場合があるのでActivationTrackを追加して、Unityちゃんが``default@unitychan``の時だけAutoBlinkが有効になるようにしてみた。
+
+## 背景
+``Assets/UnityChanStage/Prefabs/Stage``プレハブをインスタンス化。
+せっかくなので各オブジェクトの構成もチェックしよう。
+
+### Stage/OrbitInnerとOrbitOuter
+* ConstantMotionで輪っかが回る。
+* Material GearでReactorの値をマテリアルに伝える？
+* Reactorは``Spectrum 2``という名前で``Assets/UnityInTheSky/Prefabs/MusicPlayer``プレハブに含まれている。
+* ReactorはAudioSource => OnAudioFilterRead => 音量みたいな感じで音量に応じてマテリアルを変化させている。
+
+### Stage/OribtInner/orbitFX1_core
+* VariableMotionで輪っかの上をレーザー発射器が移動する。
+
+### Stage/OrbitInner/orbitFX1_core/LaserGun
+* 最初はdisable。Enableになるとレーザーを発射する。
+
+なるほど。オーディオ回りはそのままセットアップして輪っかの動きはタイムラインに乗せてみよう。
+
+AudioSourceを削除して``Assets/UnityInTheSky/Prefabs/MusicPlayer``プレハブをインスタンス化。
+オーディオトラックに``MusicPlayer/Main``をバインド
+オーディオトラックを４つ複製。``MusicPlayer/Spectrum 1, 2, 3, 4``をバインド。
+
+ActivationTrackを作成。LaserGunをバインド。
+曲の途中から適当に発射するようにクリップを作成。
+
+ConstaintMotionがITimeControlを実装するようにして、アニメーション時間をTime.deltaではなくITimeControl.SetTime経由になるように改造してやる。
+ControlTrackを作成。OrbitInnerをバインド。クリップを作成。ControlActivationのチェックを外す。前奏が終わったあたりから動き始めるようにしてみた。
+
+VariableMotionも同様に改造してControlTrackに乗せてみた。
+
+Timelineのシークバーの動きに応じて輪っかが動くようになった。
+
+![innerorbit](innerorbit.png)
+
+### Stage/StageEffectsGroup
+ActivationTrackを作成。LaserGunをバインド。
+曲の途中から適当に発射するようにクリップを作成。
+
+ActivationTrackを作成。SonicBoomをバインド。
+曲の途中から適当に発射するようにクリップを作成。
+
+### Stage/StageObjectGroup
+建物。
+
+### Confetti
+``Assets/UnityChanStage/Prefabs/Confetti``プレハブをインスタンス化。
+ControlTrackを作成。クリップを作成してConfetti/ParticleSystemをセット。
+２組作る。
+こっちのParticleSystemはControlTrackに乗った。
+
+### BackScreenとBackScreenCameraRig
+``Assets/UnityChanStage/Prefabs/BackScreen``プレハブをインスタンス化。
+``Assets/UnityChanStage/Prefabs/BackScreen Camera Rig``プレハブをインスタンス化。
+
+### Background
+建物の外の遠景と天球。
+
+### Visualizer
+ミラーな床。
+
+## ポストエフェクト
+
+
+## 歌詞トラックを作る
+
+カメラ切替の目印を兼ねて歌詞トラックを作る。
+
+## カメラ切替トラックを作る
+中心に目標を捉えるように追跡するというより、ゆっくりパンアップするとか、ゆっくりパンするとか、ゆっくりズームするような動きにしたいのでそういうスクリプトを作る。
+Cinemachineのドリー位置を更新したり、targetをゆっくり動かしたりそういうトラック。
+
+イントロA パンアップ
+イントロB ズームアウト
+
+A パンライト
+B ズームイン
+サビ 
+
+A
+B
+サビ
+
+C 
+
+サビ ドリー
+
+エンド フォーカスアウト
 
 ## memo
 * [StageDirectorをTimeline(PlayableDirector)で置き換える](timeline.md)
