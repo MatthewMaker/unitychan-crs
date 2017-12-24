@@ -80,6 +80,76 @@ HandExpressionのアニメーションクリップを眺めるとそこまで激
 
 トラックの作り方が分かってきた。
 
+## EyeTarget
+
+カメラ目線にすべく調べてみると、DeltaLookAtAxisというのがUnityちゃんに含まれているとあり実際動かすことができた。
+
+```cs
+public class LookAtTarget : MonoBehaviour
+{
+    [SerializeField]
+    DeltaLookAtAxis[] m_eyeLocators;
+
+    void LookAt(Transform eye, Transform target)
+    {
+        var dir = (target.position - eye.position).normalized;
+        var d = Quaternion.FromToRotation(eye.forward, dir);
+        eye.transform.rotation *= d;
+    }
+
+    void Update()
+    {
+        foreach (var x in m_eyeLocators)
+        {
+            LookAt(x.transform, transform);
+        }
+    }
+}
+```
+
+* Multiplyer x=0.2
+* Multiplyer y=0.1
+
+くらいの設定がよさげだった。
+もう少し調べると不通にMecanimHumanoidのLookAt IKでいけるとあったのでそっちもやってみた。
+
+```cs
+public class IKUpdater : MonoBehaviour
+{
+
+    [SerializeField]
+    Animator m_animator;
+
+    [SerializeField]
+    Transform m_lookAt;
+
+    [SerializeField, Range(0, 1)]
+    float m_lookAtWeight;
+
+    private void Reset()
+    {
+        m_animator = GetComponent<Animator>();
+        m_lookAt = Camera.main;
+    }
+
+    private void OnAnimatorIK(int layerIndex)
+    {
+        Debug.Log("OnAnimatorIK");
+        m_animator.SetLookAtWeight(m_lookAtWeight);
+        m_animator.SetLookAtPosition(m_lookAt.position);
+    }
+}
+```
+
+LookAt更新用に作ったのだけど、``OnAnimatorIK``が呼ばれなかった。
+・・・タイムラインを使っているときにIKを使えるのかよくわからないな。
+わかったら使うとしてとりあえずDeltaLookAtAxisを使う。
+
+![lookat](lookat.png)
+
+ついでにAutoBlinkを有効にした。
+ずっとAutoBlinkだと干渉する場合があるのでActivationTrackを追加して、Unityちゃんが``default@unitychan``の時だけAutoBlinkが有効になるようにしてみた。
+
 ## memo
 * [StageDirectorをTimeline(PlayableDirector)で置き換える](timeline.md)
 * [DefaultPayable導入](defaultplayable.md)

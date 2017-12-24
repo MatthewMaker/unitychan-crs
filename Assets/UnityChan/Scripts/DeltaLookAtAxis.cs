@@ -11,6 +11,7 @@ using System.Collections;
 namespace UnityChan
 {
 
+    [ExecuteInEditMode]
 	public class DeltaLookAtAxis : MonoBehaviour {
 
 		//瞳のメッシュレンダラの参照.

@@ -7,16 +7,17 @@ using UnityEngine;
 using System.Collections;
 using System.Security.Policy;
 
+
 namespace UnityChan
 {
 	public class AutoBlink : MonoBehaviour
 	{
 
-		public bool isActive = true;				//オート目パチ有効
 		public SkinnedMeshRenderer ref_SMR_EYE_DEF;	//EYE_DEFへの参照
 		public SkinnedMeshRenderer ref_SMR_EL_DEF;	//EL_DEFへの参照
 		public float ratio_Close = 85.0f;			//閉じ目ブレンドシェイプ比率
 		public float ratio_HalfClose = 20.0f;		//半閉じ目ブレンドシェイプ比率
+
 		[HideInInspector]
 		public float
 			ratio_Open = 0.0f;
@@ -47,18 +48,23 @@ namespace UnityChan
 			//ref_SMR_EL_DEF = GameObject.Find("EL_DEF").GetComponent<SkinnedMeshRenderer>();
 		}
 
-
+        Coroutine m_coroutine;
 
 		// Use this for initialization
-		void Start ()
+		void OnEnable ()
 		{
 			ResetTimer ();
 			// ランダム判定用関数をスタートする
-			StartCoroutine ("RandomChange");
+			m_coroutine=StartCoroutine ("RandomChange");
 		}
 
-		//タイマーリセット
-		void ResetTimer ()
+        private void OnDisable()
+        {
+            StopCoroutine(m_coroutine);
+        }
+
+        //タイマーリセット
+        void ResetTimer ()
 		{
 			timeRemining = timeBlink;
 			timerStarted = false;
@@ -82,29 +88,32 @@ namespace UnityChan
 			}
 		}
 
-		void LateUpdate ()
-		{
-			if (isActive) {
-				if (isBlink) {
-					switch (eyeStatus) {
-					case Status.Close:
-						SetCloseEyes ();
-						break;
-					case Status.HalfClose:
-						SetHalfCloseEyes ();
-						break;
-					case Status.Open:
-						SetOpenEyes ();
-						isBlink = false;
-						break;
-					}
-					//Debug.Log(eyeStatus);
-				}
-			}
-		}
+        void LateUpdate()
+        {
+            if (isBlink)
+            {
+                switch (eyeStatus)
+                {
+                    case Status.Close:
+                        SetCloseEyes();
+                        break;
+
+                    case Status.HalfClose:
+                        SetHalfCloseEyes();
+                        break;
+
+                    case Status.Open:
+                        SetOpenEyes();
+                        isBlink = false;
+                        break;
+                }
+                //Debug.Log(eyeStatus);
+            }
+        }
 
 		void SetCloseEyes ()
 		{
+            //Debug.LogFormat("SetCloseEyes: {0}", Time.time);
 			ref_SMR_EYE_DEF.SetBlendShapeWeight (6, ratio_Close);
 			ref_SMR_EL_DEF.SetBlendShapeWeight (6, ratio_Close);
 		}
