@@ -6,8 +6,6 @@ using UnityEngine.UI;
 
 public class TextSwitcherMixerBehaviour : PlayableBehaviour
 {
-    Color m_DefaultColor;
-    int m_DefaultFontSize;
     string m_DefaultText;
 
     Text m_TrackBinding;
@@ -22,16 +20,12 @@ public class TextSwitcherMixerBehaviour : PlayableBehaviour
 
         if (!m_FirstFrameHappened)
         {
-            m_DefaultColor = m_TrackBinding.color;
-            m_DefaultFontSize = m_TrackBinding.fontSize;
             m_DefaultText = m_TrackBinding.text;
             m_FirstFrameHappened = true;
         }
 
         int inputCount = playable.GetInputCount ();
 
-        Color blendedColor = Color.clear;
-        float blendedFontSize = 0f;
         float totalWeight = 0f;
         float greatestWeight = 0f;
         int currentInputs = 0;
@@ -42,8 +36,6 @@ public class TextSwitcherMixerBehaviour : PlayableBehaviour
             ScriptPlayable<TextSwitcherBehaviour> inputPlayable = (ScriptPlayable<TextSwitcherBehaviour>)playable.GetInput(i);
             TextSwitcherBehaviour input = inputPlayable.GetBehaviour ();
             
-            blendedColor += input.color * inputWeight;
-            blendedFontSize += input.fontSize * inputWeight;
             totalWeight += inputWeight;
 
             if (inputWeight > greatestWeight)
@@ -56,8 +48,6 @@ public class TextSwitcherMixerBehaviour : PlayableBehaviour
                 currentInputs++;
         }
 
-        m_TrackBinding.color = blendedColor + m_DefaultColor * (1f - totalWeight);
-        m_TrackBinding.fontSize = Mathf.RoundToInt (blendedFontSize + m_DefaultFontSize * (1f - totalWeight));
         if (currentInputs != 1 && 1f - totalWeight > greatestWeight)
         {
             m_TrackBinding.text = m_DefaultText;
@@ -68,8 +58,6 @@ public class TextSwitcherMixerBehaviour : PlayableBehaviour
     {
         if (m_TrackBinding != null)
         {
-            m_TrackBinding.color = m_DefaultColor;
-            m_TrackBinding.fontSize = m_DefaultFontSize;
             m_TrackBinding.text = m_DefaultText;
         }
         m_FirstFrameHappened = false;

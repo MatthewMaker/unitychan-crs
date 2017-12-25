@@ -220,9 +220,17 @@ ControlTrackを作成。クリップを作成してConfetti/ParticleSystemをセ
 
 ![withposteffect](withposteffect.png)
 
+## LogoのScreenOverlay復活
+
+* [これで](https://qiita.com/ousttrue/items/ac2f0b3847e76a36b1f0)
+
 ## 歌詞トラックを作る
 
 カメラ切替の目印を兼ねて歌詞トラックを作る。
+
+![sateto](sateto.png)
+
+DefaultPlayableのTextSwitcherを改造したもの。
 
 ## カメラ切替トラックを作る
 Cinemachineの練習にいろんなパターンを試してみる。
