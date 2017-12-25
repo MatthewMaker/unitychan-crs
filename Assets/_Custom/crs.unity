@@ -281,8 +281,16 @@ PlayableDirector:
     value: {fileID: 0}
   - key: {fileID: 114568090657744000, guid: e5030557ab005ff4692df0d29599f7a7, type: 2}
     value: {fileID: 0}
-  - key: {fileID: 114227724159113546, guid: e5030557ab005ff4692df0d29599f7a7, type: 2}
+  - key: {fileID: 0}
     value: {fileID: 0}
+  - key: {fileID: 114260999842617718, guid: e5030557ab005ff4692df0d29599f7a7, type: 2}
+    value: {fileID: 0}
+  - key: {fileID: 114264410968634928, guid: e5030557ab005ff4692df0d29599f7a7, type: 2}
+    value: {fileID: 0}
+  - key: {fileID: 114766717012097158, guid: e5030557ab005ff4692df0d29599f7a7, type: 2}
+    value: {fileID: 2000492937}
+  - key: {fileID: 114844347197793038, guid: e5030557ab005ff4692df0d29599f7a7, type: 2}
+    value: {fileID: 2000492937}
   m_ExposedReferences:
     m_References:
     - 1df354f18a281bf4bb5a8b18ccfbe8a1: {fileID: 1343324574}
@@ -627,7 +635,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 721215854}
-  m_LocalRotation: {x: -0.0004933181, y: 0.9992447, z: -0.036425047, w: -0.013533146}
+  m_LocalRotation: {x: 0.00007257315, y: 0.9998974, z: -0.013236557, w: 0.0054822178}
   m_LocalPosition: {x: -0.014, y: 1.1, z: 2.242}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -1105,19 +1113,19 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 13700042, guid: 44374dd563c03d64aaff55a08495dd9f, type: 2}
       propertyPath: m_BlendShapeWeights.Array.data[6]
-      value: 0
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 13700040, guid: 44374dd563c03d64aaff55a08495dd9f, type: 2}
       propertyPath: m_BlendShapeWeights.Array.data[6]
-      value: 0
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 13700044, guid: 44374dd563c03d64aaff55a08495dd9f, type: 2}
       propertyPath: m_BlendShapeWeights.Array.data[1]
-      value: 0
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 13700038, guid: 44374dd563c03d64aaff55a08495dd9f, type: 2}
       propertyPath: m_BlendShapeWeights.Array.data[1]
-      value: 0
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 13700040, guid: 44374dd563c03d64aaff55a08495dd9f, type: 2}
       propertyPath: m_BlendShapeWeights.Array.data[0]
@@ -3235,7 +3243,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1983988678}
-  m_LocalRotation: {x: -0.0004933181, y: 0.9992447, z: -0.036425047, w: -0.013533146}
+  m_LocalRotation: {x: 0.00007257315, y: 0.9998974, z: -0.013236557, w: 0.0054822178}
   m_LocalPosition: {x: -0.014, y: 1.1, z: 2.242}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
