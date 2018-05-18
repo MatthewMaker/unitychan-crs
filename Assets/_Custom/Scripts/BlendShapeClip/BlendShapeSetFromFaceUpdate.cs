@@ -18,6 +18,7 @@ public class BlendShapeSetFromFaceUpdate : MonoBehaviour
 
     const string OUT_DIR = "Assets/_Custom/BlendShapeSet/";
 
+#if UNITY_EDITOR
     static void CreateBlendShapeSet(AnimationClip clip)
     {
         var blendShapeSet = ScriptableObject.CreateInstance<BlendShapeSet>();
@@ -59,4 +60,5 @@ public class BlendShapeSetFromFaceUpdate : MonoBehaviour
             CreateBlendShapeSet(x);
         }
     }
+#endif
 }

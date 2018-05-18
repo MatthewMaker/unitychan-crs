@@ -1,4 +1,6 @@
-﻿using UnityEditor;
+﻿#if UNITY_EDITOR
+using UnityEditor;
+#endif
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
@@ -6,6 +8,7 @@ using UnityEngine.Timeline;
 
 public class BlendShapeTrackFromHandExpression : MonoBehaviour
 {
+#if UNITY_EDITOR
     [SerializeField]
     AnimationClip m_clip;
 
@@ -71,4 +74,5 @@ public class BlendShapeTrackFromHandExpression : MonoBehaviour
 
         AssetDatabase.SaveAssets();
     }
+#endif
 }

@@ -1,7 +1,9 @@
-﻿using System;
+﻿#if UNITY_EDITOR
+using UnityEditor;
+#endif
+using System;
 using System.Collections.Generic;
 using System.IO;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
@@ -9,6 +11,7 @@ using UnityEngine.Timeline;
 
 public class TextSwitcherTrackUtil : MonoBehaviour
 {
+#if UNITY_EDITOR
     [SerializeField]
     TextAsset m_src;
 
@@ -158,4 +161,5 @@ public class TextSwitcherTrackUtil : MonoBehaviour
         }
         AssetDatabase.SaveAssets();
     }
+#endif
 }
