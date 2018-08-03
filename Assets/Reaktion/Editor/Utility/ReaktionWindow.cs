@@ -1,3 +1,4 @@
+#pragma warning disable 618 //for now, just disable warnings for unitychan-crs
 //
 // Reaktion - An audio reactive animation toolkit for Unity.
 //

@@ -1,5 +1,7 @@
-﻿using UnityEngine;
+﻿#pragma warning disable 618 //for now, just disable warnings for unitychan-crs
+using UnityEngine;
 using System.Collections;
+using UnityStandardAssets.ImageEffects;
 
 public class WaitingRoom : MonoBehaviour
 {

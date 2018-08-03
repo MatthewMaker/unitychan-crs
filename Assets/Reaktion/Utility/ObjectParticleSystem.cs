@@ -1,4 +1,5 @@
-﻿//
+﻿#pragma warning disable 618 //for now, just disable warnings for unitychan-crs
+//
 // Reaktion - An audio reactive animation toolkit for Unity.
 //
 // Copyright (C) 2013, 2014 Keijiro Takahashi
@@ -37,7 +38,7 @@ public class ObjectParticleSystem : MonoBehaviour
 
     void Start()
     {
-        var count = Mathf.Min(maxParticles, particleSystem.maxParticles);
+        var count = Mathf.Min(maxParticles, GetComponent<ParticleSystem>().maxParticles);
 
         particles = new ParticleSystem.Particle[count];
         pool = new GameObject[count];
@@ -48,14 +49,14 @@ public class ObjectParticleSystem : MonoBehaviour
 
     void LateUpdate()
     {
-        var count = particleSystem.GetParticles(particles);
+        var count = GetComponent<ParticleSystem>().GetParticles(particles);
 
         for (var i = 0; i < count; i++)
         {
             var p = particles [i];
             var o = pool[i];
 
-            o.renderer.enabled = true;
+            o.GetComponent<Renderer>().enabled = true;
 
             o.transform.position = prefab.transform.position + p.position;
             o.transform.localRotation = Quaternion.AngleAxis(p.rotation, p.axisOfRotation) * prefab.transform.rotation;
@@ -63,7 +64,7 @@ public class ObjectParticleSystem : MonoBehaviour
         }
 
         for (var i = count; i < pool.Length; i++)
-            pool[i].renderer.enabled = false;
+            pool[i].GetComponent<Renderer>().enabled = false;
     }
 }
 

@@ -1,4 +1,5 @@
-﻿//
+﻿#pragma warning disable 618 //for now, just disable warnings for unitychan-crs
+//
 // Mecanimのアニメーションデータが、原点で移動しない場合の Rigidbody付きコントローラ
 // サンプル
 // 2014/03/13 N.Kobyasahi
