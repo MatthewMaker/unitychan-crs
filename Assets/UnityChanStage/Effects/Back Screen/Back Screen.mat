@@ -4,7 +4,7 @@
 Material:
   serializedVersion: 6
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: Back Screen
   m_Shader: {fileID: 4800000, guid: 0ff22b88a33ba40138a9da2ccb52c05f, type: 3}
