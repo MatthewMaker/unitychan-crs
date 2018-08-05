@@ -16,3 +16,5 @@
 sysinfo.txt
 
 .DS_Store
+.vs/unitychan-crs/xs/sqlite3
+UserPrefs.xml
