@@ -24,7 +24,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _StripeTex:
         m_Texture: {fileID: 2800000, guid: 966f36fdcf87d463289d8a16793aa298, type: 3}
-        m_Scale: {x: 4, y: 4}
+        m_Scale: {x: 16, y: 16}
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _BaseLevel: 0.4
