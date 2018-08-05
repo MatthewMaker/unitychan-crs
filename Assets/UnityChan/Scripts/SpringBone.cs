@@ -77,6 +77,7 @@ namespace UnityChan
 
 		public void UpdateSpring ()
 		{
+            if (!trs) return;
 			//Kobayashi
 			org = trs;
 			//回転をリセット
