@@ -8,6 +8,8 @@ namespace FUnit
 {
     public class SpringColliderDebug
     {
+        public static implicit operator bool(SpringColliderDebug _) { return _ != null; }
+
         public void ClearCollisions()
         {
             collisions.Clear();

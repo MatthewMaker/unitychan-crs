@@ -342,7 +342,7 @@ namespace FUnit
 
         private void Update()
         {
-            colliderDebug.ClearCollisions();
+            if(colliderDebug) colliderDebug.ClearCollisions();
         }
 
         private void OnDrawGizmos()
@@ -370,7 +370,7 @@ namespace FUnit
             var localContactPoint = localNormal * radius;
             var worldNormal = transform.TransformDirection(localNormal).normalized;
             var worldContactPoint = transform.TransformPoint(localContactPoint);
-            colliderDebug.RecordCollision(worldContactPoint, worldNormal, worldMoverRadius, collisionStatus);
+            if (colliderDebug) colliderDebug.RecordCollision(worldContactPoint, worldNormal, worldMoverRadius, collisionStatus);
         }
 #endif
     }
