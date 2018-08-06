@@ -142,6 +142,7 @@
 			float3 n = GuessNormal(center);
 			n = mul(UNITY_MATRIX_VP, float4(n,0.0)).xyz;
 			float circle = Circle(center);
+			int i;
 
 			o.Albedo = 0.0;
 			o.Alpha = 1.0;
@@ -164,7 +165,7 @@
 			};
 			float depth = 1.0;
 			depth = tex2D(_ReflectionDepthTex, coord).r;
-			for(int i=1; i<9; ++i) {
+			for(i=1; i<9; ++i) {
 				depth = min(depth, tex2D(_ReflectionDepthTex, coord+blur_coords[i]).r);
 			}
 
@@ -178,7 +179,7 @@
 
 			float g = saturate((grid_d+0.02)*50.0);
 			coord += n.xz * (g>0.0 && g<1.0 ? 1.0 : 0.0) * 0.02;
-			for(int i=0; i<9; ++i) {
+			for(i=0; i<9; ++i) {
 				refcolor += tex2D(_ReflectionTex, coord+blur_coords[i]*((1.0-fade_by_depth)*0.75+0.25)).rgb * 0.1111;
 				//refcolor += tex2D(_ReflectionTex, coord+blur_coords[i]).rgb * 0.1111;
 			}

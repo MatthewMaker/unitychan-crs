@@ -1,5 +1,3 @@
-// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
-
 struct appdata_t {
     float4 vertex : POSITION;
     float2 texcoord : TEXCOORD0;

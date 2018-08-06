@@ -52,24 +52,28 @@ public class ParticleSystemGear : MonoBehaviour
             GetComponent<ParticleSystem>().Play();
         }
 
-        if (emissionRate.enabled)
-            GetComponent<ParticleSystem>().emissionRate = emissionRate.Evaluate(reaktor.Output);
+            //if (emissionRate.enabled)
+            //    GetComponent<ParticleSystem>().emissionRate = emissionRate.Evaluate(reaktor.Output);
 
-        if (size.enabled)
+
+            if (size.enabled)
             ResizeParticles(size.Evaluate(reaktor.Output));
     }
 
-    void ResizeParticles(float newSize)
+        void ResizeParticles(float newSize)
     {
-        if (tempArray == null || tempArray.Length != GetComponent<ParticleSystem>().maxParticles)
-            tempArray = new ParticleSystem.Particle[GetComponent<ParticleSystem>().maxParticles];
+        //if (tempArray == null || tempArray.Length != GetComponent<ParticleSystem>().maxParticles)
+        if (tempArray == null || tempArray.Length != GetComponent<ParticleSystem>().main.maxParticles)
+            //tempArray = new ParticleSystem.Particle[GetComponent<ParticleSystem>().maxParticles];
+            tempArray = new ParticleSystem.Particle[GetComponent<ParticleSystem>().main.maxParticles];
 
-        var count = GetComponent<ParticleSystem>().GetParticles(tempArray);
+            var count = GetComponent<ParticleSystem>().GetParticles(tempArray);
 
         for (var i = 0; i < count; i++)
-            tempArray[i].size = newSize;
+            //tempArray[i].size = newSize;
+            tempArray[i].startSize = newSize;
 
-        GetComponent<ParticleSystem>().SetParticles(tempArray, count);
+            GetComponent<ParticleSystem>().SetParticles(tempArray, count);
     }
 }
 

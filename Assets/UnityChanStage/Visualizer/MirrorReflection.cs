@@ -52,7 +52,7 @@ public class MirrorReflection : MonoBehaviour
 		// Render reflection
 		// Reflect camera around reflection plane
 		float d = -Vector3.Dot(normal, pos) - m_ClipPlaneOffset;
-		Vector4 reflectionPlane = new Vector4(normal.x, normal.y, normal.z, d);
+        Vector4 reflectionPlane = new Vector4(normal.x, normal.y, normal.z, d);
 
 		Matrix4x4 reflection = Matrix4x4.zero;
 		CalculateReflectionMatrix(ref reflection, reflectionPlane);
@@ -69,8 +69,9 @@ public class MirrorReflection : MonoBehaviour
 
 		reflectionCamera.cullingMask = ~(1 << 4) & m_ReflectLayers.value; // never render water layer
 		reflectionCamera.targetTexture = m_ReflectionTexture;
-		GL.SetRevertBackfacing(true);
-		reflectionCamera.transform.position = newpos;
+        //GL.SetRevertBackfacing(true);
+        GL.invertCulling = true;
+        reflectionCamera.transform.position = newpos;
 		Vector3 euler = cam.transform.eulerAngles;
 		reflectionCamera.transform.eulerAngles = new Vector3(0, euler.y, euler.z);
 		reflectionCamera.depthTextureMode = DepthTextureMode.Depth;
@@ -84,8 +85,9 @@ public class MirrorReflection : MonoBehaviour
 
 
 		reflectionCamera.transform.position = oldpos;
-		GL.SetRevertBackfacing(false);
-		Material[] materials = GetComponent<Renderer>().sharedMaterials;
+        //GL.SetRevertBackfacing(false);
+        GL.invertCulling = false;
+        Material[] materials = GetComponent<Renderer>().sharedMaterials;
 		foreach (Material mat in materials)
 		{
 			mat.SetTexture("_ReflectionTex", m_ReflectionTexture);
