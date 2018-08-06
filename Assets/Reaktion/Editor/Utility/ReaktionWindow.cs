@@ -43,10 +43,10 @@ public class ReaktionWindow : EditorWindow
 
     void OnEnable ()
     {
-        EditorApplication.playmodeStateChanged += OnPlaymodeStateChanged;
+        EditorApplication.playModeStateChanged += OnPlaymodeStateChanged;
     }
 
-    public void OnPlaymodeStateChanged ()
+    public void OnPlaymodeStateChanged (UnityEditor.PlayModeStateChange playModeStateChange)
     {
         autoRepaintOnSceneChange = !EditorApplication.isPlaying;
         Repaint ();
